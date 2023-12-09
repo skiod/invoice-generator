@@ -1,0 +1,160 @@
+#app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+  }
+  
+  body {
+    background: #ddd;
+    margin-bottom:2rem
+  }
+  
+  textarea {
+    width: 100% !important;
+    border: 1px solid #ddd !important;
+  }
+  
+  .invoice {
+    background: #fff;
+    width: 100%;
+    padding: 50px;
+  }
+  
+  .logo {
+    width: 2.5cm;
+  }
+  
+  .document-type {
+    text-align: right;
+    color: #444;
+  }
+  
+  .conditions {
+    font-size: 0.7em;
+    color: #666;
+  }
+  
+  .bottom-page {
+    font-size: 0.7em;
+  }
+  
+  table {
+    font-size: 12px !important;
+  }
+  
+  table td {
+    padding: 0.45rem !important;
+  }
+  
+  table td {
+    font-size: 15px;
+  }
+   
+  .transparent-input {
+    border: 1px dashed blue !important;
+    background: transparent;
+    outline: none;
+  }
+  
+  .flex-container {
+    display: flex;
+  }
+  
+  [data-invoicly="true"] {
+    border: 1px dashed #ddd;
+    padding: 5px;
+  }
+  
+  .settings-div {
+    /* display: none; */
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .invoice-container{
+    width:78%;
+    float:left
+  }
+
+  .settings-container{
+    width:20%;
+    float:right
+  }
+
+
+  /* general settings*/
+  .cursor-pointer{
+    cursor: pointer;
+  }
+
+
+  /* nav */
+
+  .center-navbar {
+    justify-content: center;
+    align-items: center;
+    margin-bottom:6rem
+  }
+
+  .navbar {
+    background-color: #343a40; /* Dark background color */
+  }
+
+  .navbar-brand,
+  .navbar-nav .nav-link {
+    color: #ffffff; /* White text color */
+  }
+
+  .navbar-toggler-icon {
+    background-color: #ffffff; /* White color for the toggler icon */
+  }
+
+  /* Optional: Add some spacing between navbar items */
+  .navbar-nav .nav-item {
+    margin-right: 10px;
+  }
+
+  
+
+
+  /* responsive */
+  /* Responsive styles for smaller screens */
+  @media (max-width: 768px) {
+    body {
+      font-size: 12px !important;
+    }
+
+    .container {
+      width: 100% !important;
+      margin : 0 !important
+    }
+
+    .invoice-container,
+    .settings-container{
+      width: 100% !important;
+    }
+
+    .invoice{
+      width: 100% !important;
+      padding: 10px !important;
+    }
+  }
+
+/* Responsive styles for even smaller screens */
+  @media (max-width: 576px) {
+    body {
+      font-size: 12px;
+    }
+
+    header {
+      text-align: center;
+    }
+
+    section {
+      padding: 10px;
+    }
+  }

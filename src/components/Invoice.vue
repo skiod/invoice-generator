@@ -1,211 +1,209 @@
 <template>
   <div class="container">
-      <div class="flex-container">
 
-    <!-- invoice generator -->
-    <section class="invoice-container" style="width:80%">
-      <div class="container">
+      <!-- invoice generator -->
+      <section class="invoice-container" style="">
 
-        <div class="invoice" id="invoice-container" @click="handleClick">
-          <div class="row">
-            <div class="col-7 mb-2" data-invoicly="true" data-only-settings="true">
-              <img alt="Logo" id="uploadedLogo" src="https://fakeimg.pl/600x400?text=Logo" class="logo">
-              <form id="logoForm">
-                <input type="file" accept="image/*" id="logoInput" @change="handleLogoChange()">
-              </form>
+          <div class="invoice" id="invoice-container" @click="handleClick">
+            <div class="row">
+              <div class="col-7 mb-2" data-invoicly="true" data-only-settings="true">
+                <img alt="Logo" id="uploadedLogo" src="https://fakeimg.pl/600x400?text=Logo" class="logo">
+                <form id="logoForm">
+                  <input type="file" accept="image/*" id="logoInput" @change="handleLogoChange()">
+                </form>
 
-            </div>
-            <div class="col-5">
-              <span class="document-type display-4">
-                <div data-invoicly="true" class="h1">FACTURE</div>
-              </span>
-              <div class="text-right" data-invoicly="true">N°90T-17-01-0123</div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-7">
-              <div data-invoicly="true">90TECH SAS</div><br>
-              <div data-invoicly="true">
-                6B Rue Aux-Saussaies-Des-Dames <br> 57950 MONTIGNY-LES-METZ
               </div>
+              <div class="col-5">
+                <span class="document-type display-4">
+                  <div data-invoicly="true" class="h1">FACTURE</div>
+                </span>
+                <div class="text-right" data-invoicly="true">N°90T-17-01-0123</div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-7">
+                <div data-invoicly="true">90TECH SAS</div><br>
+                <div data-invoicly="true">
+                  6B Rue Aux-Saussaies-Des-Dames <br> 57950 MONTIGNY-LES-METZ
+                </div>
+
+              </div>
+              <div class="col-5" style="text-align: right;">
+                <br><br><br>
+                <div data-invoicly="true">
+                  Energies54 <br>
+                  Réf. Client C00022 <br>
+                  12 Rue de Verdun <br>
+                  54250 JARNY</div>
+              </div>
+            </div>
+            <br>
+            <br>
+            <h6>
+              <div data-invoicly="true">Audits et rapports mensuels (1er Novembre 2016 - 30 Novembre 2016)</div>
+            </h6>
+            <br>
+            <div class="table-responsive">
+              <table id="table" class="table table-striped">
+              <thead>
+                <tr>
+                  <th data-invoicly="true">Description</th>
+                  <th data-invoicly="true">Quantité</th>
+                  <th data-invoicly="true">Unité</th>
+                  <th data-invoicly="true">PU HT</th>
+                  <th data-invoicly="true">TVA</th>
+                  <th data-invoicly="true">Total HT</th>
+                  <th class="hide-elements">Action</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(row, index) in rows" :key="index">
+                  <td><span :data-invoicly-field="'description'" :data-invoicly-row-id="index" :data-invoicly="true">{{ row.description }}</span></td>
+                  <td><span data-invoicly-field="quantity" :data-invoicly-row-id="index" :data-invoicly="true" data-invoicly-type="number">{{ row.quantity }}</span></td>
+                  <td><span data-invoicly-field="unity" :data-invoicly-row-id="index" :data-invoicly="true">{{ row.unity }}</span></td>
+                  <td><span data-invoicly-field="puHT" :data-invoicly-row-id="index" :data-invoicly="true" data-invoicly-type="number">{{ row.puHT }}</span> {{currency}}</td>
+                  <td><span data-invoicly-field="tva" :data-invoicly-row-id="index" :data-invoicly="true" data-invoicly-type="number">{{ row.tva }}</span>%</td>
+                  <td><span data-invoicly-field="totalHT" :data-invoicly-row-id="index" :data-invoicly="true" data-invoicly-type="number">{{ row.totalHT }}</span> {{currency}}</td>
+                  <td>
+                    <button class="btn btn-sm btn-danger" @click="deleteRow(index)">-</button>
+                  </td>
+                </tr>
+              </tbody>
+
+            </table>
+            </div>
+            
+            <button style="display:block;text-align:right" class="btn btn-xs btn-success" @click="addNewRow()">+</button>
+
+            <div class="row">
+              <div class="col-8">
+              </div>
+              <div class="col-4">
+                <table class="table table-sm text-right">
+                  <tbody>
+                    <tr>
+                      <td><strong data-invoicly="true" >Total HT</strong></td>
+                      <td class="text-right" id="total-ht">{{totalHT.toFixed(2)}} {{currency}} </td>
+                    </tr>
+                    <tr>
+                      <td data-invoicly="true">TVA 20%</td>
+                      <td class="text-right" id="total-tva">{{totalTVA.toFixed(2)}} {{currency}} </td>
+                    </tr>
+                    <tr>
+                      <td data-invoicly="true"><strong>Total TTC</strong></td>
+                      <td class="text-right" id="total-ttc">{{totalTTC.toFixed(2)}} {{currency}} </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="conditions" data-invoicly="true">
+              En votre aimable règlement
+              Et avec nos remerciements. <br>
+              Conditions de paiement : paiement à réception de facture, à 15 jours. <br>
+              Aucun escompte consenti pour règlement anticipé. <br>
+              Règlement par virement bancaire. <br>
+
+              En cas de retard de paiement, <br> indemnité forfaitaire pour frais de recouvrement : 40 euros (art. L.4413
+              et L.4416s
+              code du commerce).
 
             </div>
-            <div class="col-5" style="text-align: right;">
-              <br><br><br>
-              <div data-invoicly="true">
-                Energies54 <br>
-                Réf. Client C00022 <br>
-                12 Rue de Verdun <br>
-                54250 JARNY</div>
+
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <div  class="bottom-page text-right" data-invoicly="true">
+              90TECH SAS - N° SIRET 80897753200015 RCS METZ <br>
+              6B, Rue aux Saussaies des Dames - 57950 MONTIGNY-LES-METZ 03 55 80 42 62 - www.90tech.fr <br>
+              Code APE 6201Z - N° TVA Intracom. FR 77 808977532 <br>
+              IBAN FR76 1470 7034 0031 4211 7882 825 - SWIFT CCBPFRPPMTZ <br>
             </div>
+
           </div>
-          <br>
-          <br>
-          <h6>
-            <div data-invoicly="true">Audits et rapports mensuels (1er Novembre 2016 - 30 Novembre 2016)</div>
-          </h6>
-          <br>
-          <table id="table" class="table table-striped">
-            <thead>
-              <tr>
-                <th data-invoicly="true">Description</th>
-                <th data-invoicly="true">Quantité</th>
-                <th data-invoicly="true">Unité</th>
-                <th data-invoicly="true">PU HT</th>
-                <th data-invoicly="true">TVA</th>
-                <th data-invoicly="true">Total HT</th>
-                <th class="hide-elements">Action</th>
 
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(row, index) in rows" :key="index">
-                <td><span :data-invoicly-field="'description'" :data-invoicly-row-id="index" :data-invoicly="true">{{ row.description }}</span></td>
-                <td><span data-invoicly-field="quantity" :data-invoicly-row-id="index" :data-invoicly="true" data-invoicly-type="number">{{ row.quantity }}</span></td>
-                <td><span data-invoicly-field="unity" :data-invoicly-row-id="index" :data-invoicly="true">{{ row.unity }}</span></td>
-                <td><span data-invoicly-field="puHT" :data-invoicly-row-id="index" :data-invoicly="true" data-invoicly-type="number">{{ row.puHT }}</span> {{currency}}</td>
-                <td><span data-invoicly-field="tva" :data-invoicly-row-id="index" :data-invoicly="true" data-invoicly-type="number">{{ row.tva }}</span>%</td>
-                <td><span data-invoicly-field="totalHT" :data-invoicly-row-id="index" :data-invoicly="true" data-invoicly-type="number">{{ row.totalHT }}</span> {{currency}}</td>
-                <td>
-                  <button class="btn btn-sm btn-danger" @click="deleteRow(index)">-</button>
-                </td>
-              </tr>
-            </tbody>
+      </section>
 
-          </table>
-          <button style="display:block;text-align:right" class="btn btn-xs btn-success" @click="addNewRow()">+</button>
+      <!-- settings -->
+      <section class="hide-elements settings-container">
+        <p class="text-center h4">Settings</p>
+        <table class="table table-responsive">
+          <tbody>
+            <tr>
+              <td><strong>Currency:</strong></td>
+              <td>
+                <select v-model="currency" id="select-currency" class="form-select">
+                  <option value="dh">MAD (dh)</option>
+                  <option value="$">USD ($)</option>
+                  <option value="€">EUR (€)</option>
+                  <option value="£">GBP (£)</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Show Logo:</strong></td>
+              <td>
+                <div class="mb-3 form-check">
+                  <input type="checkbox" id="autoRecalculate" class="form-check-input">
+                </div>
+              </td>
+            </tr>
+          
+          </tbody>
+        </table>
+        <button style="display:block;width:100%" class="btn btn-success btn-block" @click="printInvoice()">Imprimer la facture</button>
 
-          <div class="row">
-            <div class="col-8">
+        <hr>
+        <div v-if="style && showSettings" class="settings-div" id="settingsDiv">
+          <div>
+            <div class="form-group mb-2">
+              <label for="textAlign">Text Align:</label>
+              <div style="display:flex;justify-content:space-between">
+                <div><i :style="style.textAlign != 'left' ? 'color:#ddd' : ''" @click="setAlign('left')" class="fa fa-align-left cursor-pointer"></i></div>
+                <div><i :style="style.textAlign != 'center' ? 'color:#ddd' : ''" @click="setAlign('center')" class="fa fa-align-center cursor-pointer"></i></div>
+                <div><i :style="style.textAlign != 'right' ? 'color:#ddd' : ''" @click="setAlign('right')" class="fa fa-align-right cursor-pointer"></i></div>
+              </div>
             </div>
-            <div class="col-4">
-              <table class="table table-sm text-right">
-                <tbody>
-                  <tr>
-                    <td><strong data-invoicly="true" >Total HT</strong></td>
-                    <td class="text-right" id="total-ht">{{totalHT.toFixed(2)}} {{currency}} </td>
-                  </tr>
-                  <tr>
-                    <td data-invoicly="true">TVA 20%</td>
-                    <td class="text-right" id="total-tva">{{totalTVA.toFixed(2)}} {{currency}} </td>
-                  </tr>
-                  <tr>
-                    <td data-invoicly="true"><strong>Total TTC</strong></td>
-                    <td class="text-right" id="total-ttc">{{totalTTC.toFixed(2)}} {{currency}} </td>
-                  </tr>
-                </tbody>
-              </table>
+      
+            <div class="form-group mb-2">
+              <label for="backgroundColor">Background Color:</label>
+              <input type="color" class="form-control" id="background" @change="backgroundColorChanged()" v-model="style.backgroundColor" name="backgroundColor">
             </div>
+      
+            <div class="form-group mb-2">
+              <label for="color">Text Color:</label>
+              <input type="color" class="form-control" id="color" @change="colorChanged()" v-model="style.color" name="color">
+            </div>
+      
+            <div class="form-group mb-2">
+              <label for="fontSize">Font Size:</label>
+              <input type="number" class="form-control" id="fontSize" v-model="style.fontSize" @change="fontSizeChanged()" name="fontSize" value="16">
+            </div>
+
+            <div class="form-group mb-2">
+              <label for="fontSize">Font Weight:</label>
+                <div class="cursor-pointer" style="display:flex;justify-content:center">
+                  <span class="p-1" @click="setFontWeight('bolder')"><b>Abc</b></span>
+                  <span class="p-1" @click="setFontWeight('lighter')">Abc</span>
+                </div>
+            </div>
+
+            <div class="form-group mb-2">
+              <label for="fontSize">Value:</label>
+              <input type="string" class="form-control" v-model="currentValue" @change="setCurrentValue()" name="fontSize" value="16">
+            </div>
+
+
+      
           </div>
-
-          <div class="conditions" data-invoicly="true">
-            En votre aimable règlement
-            Et avec nos remerciements. <br>
-            Conditions de paiement : paiement à réception de facture, à 15 jours. <br>
-            Aucun escompte consenti pour règlement anticipé. <br>
-            Règlement par virement bancaire. <br>
-
-            En cas de retard de paiement, <br> indemnité forfaitaire pour frais de recouvrement : 40 euros (art. L.4413
-            et L.4416s
-            code du commerce).
-
-          </div>
-
-          <br>
-          <br>
-          <br>
-          <br>
-
-          <div  class="bottom-page text-right" data-invoicly="true">
-            90TECH SAS - N° SIRET 80897753200015 RCS METZ <br>
-            6B, Rue aux Saussaies des Dames - 57950 MONTIGNY-LES-METZ 03 55 80 42 62 - www.90tech.fr <br>
-            Code APE 6201Z - N° TVA Intracom. FR 77 808977532 <br>
-            IBAN FR76 1470 7034 0031 4211 7882 825 - SWIFT CCBPFRPPMTZ <br>
-          </div>
-
         </div>
-      </div>
-    </section>
 
-    <!-- settings -->
-    <section class="hide-elements settings-container" style="width:20%">
-      <p class="text-center h4">Settings</p>
-      <table class="table table-responsive">
-        <tbody>
-          <tr>
-            <td><strong>Currency:</strong></td>
-            <td>
-              <select v-model="currency" id="select-currency" class="form-select">
-                <option value="dh">MAD (dh)</option>
-                <option value="$">USD ($)</option>
-                <option value="€">EUR (€)</option>
-                <option value="£">GBP (£)</option>
-                <!-- Add more currency options as needed -->
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Show Logo:</strong></td>
-            <td>
-              <div class="mb-3 form-check">
-                <input type="checkbox" id="autoRecalculate" class="form-check-input">
-              </div>
-            </td>
-          </tr>
-         
-        </tbody>
-      </table>
-      <button style="display:block;width:100%" class="btn btn-success btn-block" @click="printInvoice()">Print Invoice</button>
+      </section>
 
-      <hr>
-      <div v-if="style && showSettings" class="settings-div" id="settingsDiv">
-        <div>
-          <div class="form-group mb-2">
-            <label for="textAlign">Text Align:</label>
-            <div style="display:flex;justify-content:space-between">
-              <div><i style="cursor:pointer" :style="style.textAlign != 'left' ? 'color:#ddd' : ''" @click="setAlign('left')" class="fa fa-align-left"></i></div>
-              <div><i style="cursor:pointer" :style="style.textAlign != 'center' ? 'color:#ddd' : ''" @click="setAlign('center')" class="fa fa-align-center"></i></div>
-              <div><i style="cursor:pointer" :style="style.textAlign != 'right' ? 'color:#ddd' : ''" @click="setAlign('right')" class="fa fa-align-right "></i></div>
-            </div>
-          </div>
-    
-          <div class="form-group mb-2">
-            <label for="backgroundColor">Background Color:</label>
-            <input type="color" class="form-control" id="background" @change="backgroundColorChanged()" v-model="style.backgroundColor" name="backgroundColor">
-          </div>
-    
-          <div class="form-group mb-2">
-            <label for="color">Text Color:</label>
-            <input type="color" class="form-control" id="color" @change="colorChanged()" v-model="style.color" name="color">
-          </div>
-    
-          <div class="form-group mb-2">
-            <label for="fontSize">Font Size:</label>
-            <input type="number" class="form-control" id="fontSize" v-model="style.fontSize" @change="fontSizeChanged()" name="fontSize" value="16">
-          </div>
-
-          <div class="form-group mb-2">
-            <label for="fontSize">Font Weight:</label>
-              <div style="display:flex;justify-content:center;cursor:pointer">
-                <span class="p-1" @click="setFontWeight('bolder')"><b>Abc</b></span>
-                <span class="p-1" @click="setFontWeight('lighter')">Abc</span>
-              </div>
-          </div>
-
-          <div class="form-group mb-2">
-            <label for="fontSize">Value:</label>
-            <input type="string" class="form-control" v-model="currentValue" @change="setCurrentValue()" name="fontSize" value="16">
-          </div>
-
-
-    
-        </div>
-      </div>
-
-    </section>
-
-  </div>
-  
   </div>
 </template>
 
@@ -251,9 +249,6 @@ export default {
         this.style.fontSize = window.getComputedStyle(editableDiv).fontSize.replace('px','')
         this.style.textAlign = window.getComputedStyle(editableDiv).textAlign
 
-        console.log(window.getComputedStyle(editableDiv).backgroundColor)
-        console.log(this.rgbaToHex(window.getComputedStyle(editableDiv).backgroundColor))
-
         if(editableDiv.getAttribute('data-only-settings')) return
 
         if (editableDiv.getAttribute('data-invoicly-type') === 'number') {
@@ -295,14 +290,11 @@ export default {
       inputElement.addEventListener('blur', () => {
         editableDiv.innerText = inputElement.value;
 
-        console.log('----',inputElement.value)
         const rowId = editableDiv.getAttribute('data-invoicly-row-id')
         const field = editableDiv.getAttribute('data-invoicly-field')
-        console.log(rowId,field)
         if(rowId && field){
           this.rows[rowId][field] = parseFloat(inputElement.value)
         }
-        console.log(JSON.stringify(this.rows))
         inputElement.replaceWith(editableDiv);
         this.calculateTotals();
         
@@ -339,15 +331,12 @@ export default {
       inputElement.focus();
     },
     calculateTotals() {
-      console.log('calculateTotals triggred')
       this.totalHT = 0;
       this.totalTVA = 0;
       this.totalTTC = 0;
 
       this.rows.forEach((row) => {
         const { quantity, puHT, tva } = row;
-
-        console.log(quantity,puHT,tva)
 
         // Calculate total HT for the current row
         const rowTotalHT = quantity * puHT;
@@ -401,7 +390,6 @@ export default {
       }
     },
     fontSizeChanged(){
-      console.log('fontSize changed',this.style.fontSize + 'px')
       this.selectedElement.style.fontSize = this.style.fontSize + 'px'
     },
     colorChanged(){

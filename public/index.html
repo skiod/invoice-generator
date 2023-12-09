@@ -7,7 +7,70 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <title>Invoice Generator</title>
+    
+    <!-- print style -->
+    <style media="print">
+    
+    [data-invoicly="true"] {
+      border: none !important;
+    }
+  
+    .invoice {
+      display: block;
+    }
+  
+    .hide-elements {
+      display: none;
+    }
+  
+    @page {
+      size: auto;
+      margin: 30px 0 !important;
+    }
+  
+    .container {
+      width: 100% !important;
+    }
+  
+    .invoice-container{
+      width: 100% !important;
+    }
+  
+    .invoice {
+      font-size: 13px !important;
+      color: black !important;
+      padding: 0 !important;
+    }
+  
+    .btn {
+      display: none !important;
+    }
+  
+    #logoForm {
+      display: none;
+    }
+  
+    table td {
+      padding: 0.45rem !important;
+    }
+  
+    .table > :not(caption) > * > * {
+      color: black !important;
+      font-size: 10px !important;
+    }
+  
+    body {
+      margin: 0;
+      /* Remove default body margin */
+      padding: 0;
+      /* Remove default body padding */
+    }
+  
+    textarea {
+      resize: none;
+    }
+    </style>
   </head>
   <body>
     <noscript>
@@ -15,5 +78,10 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
   </body>
 </html>
