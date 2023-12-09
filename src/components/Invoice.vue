@@ -169,7 +169,7 @@
               </div>
             </div>
       
-            <div class="form-group mb-2">
+            <div v-if="false" class="form-group mb-2">
               <label for="backgroundColor">Background Color:</label>
               <input type="color" class="form-control" id="background" @change="backgroundColorChanged()" v-model="style.backgroundColor" name="backgroundColor">
             </div>
