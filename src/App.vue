@@ -91,12 +91,14 @@ table td {
 
   @page {
     size: auto;
-    /* auto is the initial value */
     margin: 30px 0;
-    /* this affects the margin in the printer settings */
   }
 
   .container {
+    width: 100% !important;
+  }
+
+  .invoice-container{
     width: 100% !important;
   }
 
@@ -140,7 +142,7 @@ table td {
 }
 
 .transparent-input {
-  border: none;
+  border: 1px dashed blue !important;
   background: transparent;
   outline: none;
 }

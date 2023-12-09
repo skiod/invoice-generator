@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="container">
       <div class="flex-container">
 
     <!-- invoice generator -->
-    <section style="flex-grow: 4;">
+    <section class="invoice-container" style="width:80%">
       <div class="container">
 
         <div class="invoice" id="invoice-container" @click="handleClick">
@@ -16,9 +16,9 @@
 
             </div>
             <div class="col-5">
-              <h1 class="document-type display-4">
-                <div data-invoicly="true">FACTURE</div>
-              </h1>
+              <span class="document-type display-4">
+                <div data-invoicly="true" class="h1">FACTURE</div>
+              </span>
               <div class="text-right" data-invoicly="true">N°90T-17-01-0123</div>
             </div>
           </div>
@@ -82,15 +82,15 @@
               <table class="table table-sm text-right">
                 <tbody>
                   <tr>
-                    <td><strong>Total HT</strong></td>
+                    <td><strong data-invoicly="true" >Total HT</strong></td>
                     <td class="text-right" id="total-ht">{{totalHT.toFixed(2)}} {{currency}} </td>
                   </tr>
                   <tr>
-                    <td>TVA 20%</td>
+                    <td data-invoicly="true">TVA 20%</td>
                     <td class="text-right" id="total-tva">{{totalTVA.toFixed(2)}} {{currency}} </td>
                   </tr>
                   <tr>
-                    <td><strong>Total TTC</strong></td>
+                    <td data-invoicly="true"><strong>Total TTC</strong></td>
                     <td class="text-right" id="total-ttc">{{totalTTC.toFixed(2)}} {{currency}} </td>
                   </tr>
                 </tbody>
@@ -128,18 +128,18 @@
     </section>
 
     <!-- settings -->
-    <section class="hide-elements" style="flex-grow: 2;">
-      <h4 class="text-center">Settings</h4>
-      <table class="table">
+    <section class="hide-elements settings-container" style="width:20%">
+      <p class="text-center h4">Settings</p>
+      <table class="table table-responsive">
         <tbody>
           <tr>
             <td><strong>Currency:</strong></td>
             <td>
               <select v-model="currency" id="select-currency" class="form-select">
+                <option value="dh">MAD (dh)</option>
                 <option value="$">USD ($)</option>
                 <option value="€">EUR (€)</option>
                 <option value="£">GBP (£)</option>
-                <option value="dh">MAD (dh)</option>
                 <!-- Add more currency options as needed -->
               </select>
             </td>
@@ -172,7 +172,6 @@
           <div class="form-group mb-2">
             <label for="backgroundColor">Background Color:</label>
             <input type="color" class="form-control" id="background" @change="backgroundColorChanged()" v-model="style.backgroundColor" name="backgroundColor">
-                <p>Selected Color: {{ style.backgroundColor }}</p>
           </div>
     
           <div class="form-group mb-2">
@@ -184,6 +183,21 @@
             <label for="fontSize">Font Size:</label>
             <input type="number" class="form-control" id="fontSize" v-model="style.fontSize" @change="fontSizeChanged()" name="fontSize" value="16">
           </div>
+
+          <div class="form-group mb-2">
+            <label for="fontSize">Font Weight:</label>
+              <div style="display:flex;justify-content:center;cursor:pointer">
+                <span class="p-1" @click="setFontWeight('bolder')"><b>Abc</b></span>
+                <span class="p-1" @click="setFontWeight('lighter')">Abc</span>
+              </div>
+          </div>
+
+          <div class="form-group mb-2">
+            <label for="fontSize">Value:</label>
+            <input type="string" class="form-control" v-model="currentValue" @change="setCurrentValue()" name="fontSize" value="16">
+          </div>
+
+
     
         </div>
       </div>
@@ -208,21 +222,26 @@ export default {
         backgroundColor: '#ffffff',
         color: '#000000',
         fontSize: '16 px',
-        textAlign : 'center'
+        textAlign : 'center',
+        fontWeight : 'lighter'
       },
-      currency: '$',
+      currency: 'dh',
       totalHT: 0,
       totalTVA: 0,
       totalTTC: 0,
       showSettings : false,
-      selectedElement : null
+      selectedElement : null,
+      currentValue : null
     }
   },
   methods: {
     handleClick(event) {
       const editableDiv = event.target;
 
+      this.selectedElement = null
       if (editableDiv.getAttribute('data-invoicly')) {
+
+        this.currentValue = editableDiv.innerText
 
         this.selectedElement = editableDiv
         //show settings
@@ -286,6 +305,9 @@ export default {
         console.log(JSON.stringify(this.rows))
         inputElement.replaceWith(editableDiv);
         this.calculateTotals();
+        
+        //set value
+        this.currentValue = editableDiv.innerText
       });
 
       inputElement.focus();
@@ -310,6 +332,8 @@ export default {
         editableDiv.innerText = inputElement.value;
         inputElement.replaceWith(editableDiv);
         this.calculateTotals();
+        //set value
+        this.currentValue = editableDiv.innerText
       });
 
       inputElement.focus();
@@ -389,6 +413,14 @@ export default {
     setAlign(where){
       this.style.textAlign = where
       this.selectedElement.style.textAlign = where
+    },
+    setFontWeight(where){
+      this.style.fontWeight = where
+      this.selectedElement.style.fontWeight = where
+    },
+    setCurrentValue(){
+      this.selectedElement.innerText = this.currentValue
+
     },
     printInvoice() {
       // Implement printInvoice logic
