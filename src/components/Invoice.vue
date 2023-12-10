@@ -29,7 +29,9 @@
 
               </div>
               <div class="col-5" style="text-align: right;">
-                <br><br><br>
+                <div class="mb-2" data-invoicly="true">
+                  Date: {{currentDate}}
+                </div>
                 <div data-invoicly="true">
                   Energies54 <br>
                   Réf. Client C00022 <br>
@@ -229,7 +231,8 @@ export default {
       totalTTC: 0,
       showSettings : false,
       selectedElement : null,
-      currentValue : null
+      currentValue : null,
+      currentDate : null
     }
   },
   methods: {
@@ -414,9 +417,14 @@ export default {
       // Implement printInvoice logic
       window.print()
     },
-    getSelectedCurrency() {
-      // Implement getSelectedCurrency logic
-      return '$'; // Replace with your logic to get the selected currency
+    getCurrentDate() {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+
+      const formattedDate = `${year}-${month}-${day}`;
+      return formattedDate;
     },
     applySettings() {
       const parentDiv = document.getElementById('invoice-container');
@@ -436,6 +444,7 @@ export default {
   },
   mounted() {
     this.calculateTotals()
+    this.currentDate = this.getCurrentDate()
   },
 }
 </script>

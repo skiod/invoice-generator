@@ -1,6 +1,7 @@
 {
-  "name": "invoicy",
+  "name": "myinvoyce",
   "version": "0.1.0",
+  "author": "Khalid Skiod",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
